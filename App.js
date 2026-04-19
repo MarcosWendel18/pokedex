@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
@@ -82,105 +83,106 @@ export default function App() {
 
   return (
     pokemon && (
-      <View style={styles.container}>
-        <View style={styles.areaLogo}>
-          <Image source={require("./assets/logo.png")} />
-        </View>
+        <ScrollView contentContainerStyle={styles.container}>
 
-        <View style={styles.areaImagem}>
-          <Image source={{ uri: pokemon.imagem }} style={styles.imagemPoke} />
-        </View>
+          <View style={styles.container}>
+            <View style={styles.areaLogo}>
+              <Image source={require("./assets/logo.png")} />
+            </View>
 
-        <View style={styles.areaDesc}>
-          <View style={styles.areaId}>
-            <Text style={styles.txtDesc}>ID: </Text>
-            <Text style={styles.txtInfo}>{pokemon?.id}</Text>
+            <View style={styles.areaImagem}>
+              <Image source={{ uri: pokemon.imagem }} style={styles.imagemPoke} />
+            </View>
+
+            <View style={styles.areaDesc}>
+              <View style={styles.areaId}>
+                <Text style={styles.txtDesc}>ID: </Text>
+                <Text style={styles.txtInfo}>{pokemon?.id}</Text>
+              </View>
+
+              <View style={styles.areaNome}>
+                <Text style={styles.txtDesc}>Nome: </Text>
+                <Text style={styles.txtInfo}>{pokemon?.nome}</Text>
+              </View>
+
+              <View style={styles.areaTipo}>
+                <Text style={styles.txtTipo}>Tipo: </Text>
+          
+                {pokemon?.tipo1 && (
+                  <Image
+                    source={tiposImagens[pokemon?.tipo1]}
+                    style={styles.imgTipo}
+                  />
+                )}
+                {pokemon?.tipo2 && (
+                  <Text style={styles.txtTipo}>Tipo 2: </Text>
+                )}
+                {pokemon?.tipo2 && (
+                  <Image
+                    source={tiposImagens[pokemon?.tipo2]}
+                    style={styles.imgTipo}
+                  />
+                )}
+              </View>
+            </View>
+          
+            <View style={styles.areaMenu}>
+              <View style={styles.areaBusca}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Digite o nome do Pokemón"
+                  value={BuscarNome}
+                  onChangeText={setBuscarNome}
+                />
+                <TouchableOpacity style={styles.btn} onPress={buscarPorNome}>
+                  <Text style={styles.txtBtn}>Buscar</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.areaBtn}>
+                <TouchableOpacity style={styles.btn} onPress={() => setId(1)}>
+                  <Text style={styles.txtBtn}>Voltar Início</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => id > 1 && setId(id - 1)}
+                >
+                  <Text style={styles.txtBtn}>Anterior</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={() => setId(id + 1)}>
+                  <Text style={styles.txtBtn}>Próximo</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <StatusBar style="auto" />
           </View>
-          <View style={styles.areaNome}>
-            <Text style={styles.txtDesc}>Nome: </Text>
-            <Text style={styles.txtInfo}>{pokemon?.nome}</Text>
-          </View>
-
-          <View style={styles.areaTipo}>
-            <Text style={styles.txtTipo}>Tipo: </Text>
-            
-            {pokemon?.tipo1 && (
-              <Image
-                source={tiposImagens[pokemon?.tipo1]}
-                style={styles.imgTipo}
-              />
-            )}
-
-            {pokemon?.tipo2 && (
-              <Text style={styles.txtTipo}>Tipo 2: </Text>
-            )}
-            {pokemon?.tipo2 && (
-              <Image
-                source={tiposImagens[pokemon?.tipo2]}
-                style={styles.imgTipo}
-              />
-            )}
-          </View>
-        </View>
-
-        
-
-        <View style={styles.areaMenu}>
-          <View style={styles.areaBusca}>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite o nome do Pokemón"
-              value={BuscarNome}
-              onChangeText={setBuscarNome}
-            />
-            <TouchableOpacity style={styles.btn} onPress={buscarPorNome}>
-              <Text style={styles.txtBtn}>Buscar</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.areaBtn}>
-            <TouchableOpacity style={styles.btn} onPress={() => setId(1)}>
-              <Text style={styles.txtBtn}>Voltar Início</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => id > 1 && setId(id - 1)}
-            >
-              <Text style={styles.txtBtn}>Anterior</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btn} onPress={() => setId(id + 1)}>
-              <Text style={styles.txtBtn}>Próximo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <StatusBar style="auto" />
-      </View>
+        </ScrollView>
     )
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    padding: 20,
     backgroundColor: "#0066ff",
     alignItems: "center",
     justifyContent: "center",
+    maxWidth: 500,
+    alignSelf: "center"
   },
   areaLogo: {
-    flex: 1,
-    margin: 40,
+    marginTop: 20,
   },
   areaImagem: {
-    flex: 2,
+    marginVertical: 20,
   },
   areaDesc: {
     alignItems: "center",
-    flex: 2,
     gap: 5,
-    margin: 5
+    marginVertical: 20
   },
   txtDesc: {
+    color: "white",
     alignSelf: "center",
   },
   areaId: {
@@ -206,8 +208,9 @@ const styles = StyleSheet.create({
     height: 70
   },
   areaMenu:{
-    flex: 1,
-    alignItems: "center"
+    marginVertical: 20,
+    alignItems: "center",
+    alignContent: "center"
   },
   areaBusca:{
     alignItems: "center",
@@ -224,8 +227,9 @@ const styles = StyleSheet.create({
   },
   areaBtn: {
     flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
     gap: 5,
-    alignItems: "center",
   },
   btn: {
     backgroundColor: "rgb(22, 78, 161)",
@@ -247,6 +251,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(28, 97, 201)',
     borderWidth: 5,
     borderRadius: 100,
-    backgroundColor: "rgba(255, 217, 0, 0.88)"
+    backgroundColor: "rgb(238, 255, 0)"
   },
 });
